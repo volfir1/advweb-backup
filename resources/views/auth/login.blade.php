@@ -8,16 +8,15 @@
   <link rel="stylesheet" href="Dashboard/vendors/feather/feather.css">
   <link rel="stylesheet" href="Dashboard/vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="Dashboard/vendors/css/vendor.bundle.base.css">
-<<<<<<< HEAD
   <link rel="stylesheet" href="/assets/css/login-signup.css">
-=======
+
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="/assets/css/login-signup.css">
   <!-- endinject -->
->>>>>>> 3480c0859b3a5f5452822a9d405c5d714a23885a
+
   <link rel="shortcut icon" href="Dashboard/images/favicon.png" />
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
@@ -30,11 +29,10 @@
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-<<<<<<< HEAD
+
                 <img src="assets/images/logos/baketogo.svg" alt="logo">
-=======
-              <img src="assets/images/logos/baketogo.svg" alt="logo">
->>>>>>> 3480c0859b3a5f5452822a9d405c5d714a23885a
+
+
               </div>
               <h4>Hello! Let's get started</h4>
               <h6 class="font-weight-light">Sign in to continue.</h6>
@@ -57,11 +55,7 @@
                   </div>
                   <a href="#" class="auth-link text-black">Forgot password?</a>
                 </div>
-                <div class="mb-2">
-                  <button type="button" class="btn btn-block btn-facebook auth-form-btn">
-                    <i class="ti-facebook mr-2"></i>Connect using Facebook
-                  </button>
-                </div>
+                
                 <div class="text-center mt-4 font-weight-light">
                   Don't have an account? <a href="/signup" class="text-primary">Create</a>
                 </div>
