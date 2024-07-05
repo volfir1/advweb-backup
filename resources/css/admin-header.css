@@ -1,0 +1,107 @@
+/* Header styling */
+.header {
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logo styling */
+.header .logo {
+    height: 50px;
+    width: auto;
+}
+
+/* Navigation styling */
+.header nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.header nav ul li {
+    margin-left: 2rem;
+}
+
+.header nav ul li:first-child {
+    margin-left: 0;
+}
+
+.header nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.header nav ul li a::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* Icon images for each navigation link */
+.header nav ul li:nth-child(1) a::before {
+    background-image: url('../icons/logout.svg'); /* Replace with your icon path */
+}
+
+/* Hover effects */
+.header nav ul li a:hover {
+    color: #007BFF;
+}
+
+.header nav ul li a:hover::before {
+    filter: brightness(0.8);
+}
+
+/* Sidebar styling */
+.sidebar {
+    background-color: #f4f4f4;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    padding-top: 4rem; /* To align with the fixed header */
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    z-index: 900;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin: 1rem 0;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    display: block;
+    padding: 1rem;
+    transition: background 0.3s, color 0.3s;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+
