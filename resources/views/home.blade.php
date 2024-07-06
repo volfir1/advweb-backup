@@ -77,8 +77,11 @@ https://templatemo.com/tm-558-klassy-cafe
                             <li class="submenu">
                                 <a href="javascript:;">Account</a>
                                 <ul>
-                                    <li><a href="{{ URL::to('login') }}">Login</a></li>
-                                    <li><a href="{{ URL::to('signup') }}">Signup</a></li>
+                                    @if(!auth()->check())
+                                    <li><a href="{{ route('login') }}">Login</a></li>
+                                    @endif
+                                    
+                                    <li><a href="{{ route('signup') }}">Signup</a></li>
                                 </ul>
                             </li>
                             <!-- <li class=""><a rel="sponsored" href="https://templatemo.com" target="_blank">External URL</a></li> -->

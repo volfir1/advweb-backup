@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Baskervville+SC&display=swap');
+
+/* General styling for the layout */
+
+
 /* Header styling */
 .header {
     background-color: white;
@@ -7,7 +12,7 @@
     align-items: center;
     padding: 1rem 2rem;
     position: sticky;
-    top: 0;
+    top: 0%;
     z-index: 1000;
 }
 
@@ -40,6 +45,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    cursor: pointer; /* Make all links have a pointer cursor */
 }
 
 .header nav ul li a::before {
@@ -52,56 +58,36 @@
     background-repeat: no-repeat;
 }
 
-/* Icon images for each navigation link */
+/* Icon URLs for each menu item */
 .header nav ul li:nth-child(1) a::before {
-    background-image: url('../icons/logout.svg'); /* Replace with your icon path */
+    background-image: url('../icons/logout.svg'); /* Replace with your logout icon path */
+}
+
+.header nav ul li:nth-child(2) a::before {
+    background-image: url('../icons/about.png'); /* Replace with your about icon path */
+}
+
+.header nav ul li:nth-child(3) a::before {
+    background-image: url('../icons/services.png'); /* Replace with your services icon path */
+}
+
+.header nav ul li:nth-child(4) a::before {
+    background-image: url('../icons/contact.png'); /* Replace with your contact icon path */
 }
 
 /* Hover effects */
 .header nav ul li a:hover {
-    color: #007BFF;
+    color: #92beed;
 }
 
 .header nav ul li a:hover::before {
     filter: brightness(0.8);
 }
 
-/* Sidebar styling */
-.sidebar {
-    background-color: #f4f4f4;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    padding-top: 4rem; /* To align with the fixed header */
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    overflow-y: auto;
-    z-index: 900;
+/* Main content wrapper styling */
+.main-wrapper {
+    display: flex;
+    height: calc(100% - 72px); /* Adjust based on header height */
+    overflow: hidden;
+    width: 100%;
 }
-
-.sidebar nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.sidebar nav ul li {
-    margin: 1rem 0;
-}
-
-.sidebar nav ul li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 600;
-    display: block;
-    padding: 1rem;
-    transition: background 0.3s, color 0.3s;
-}
-
-.sidebar nav ul li a:hover {
-    background-color: #007BFF;
-    color: #fff;
-}
-
-

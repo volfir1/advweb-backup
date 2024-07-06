@@ -11,15 +11,23 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-    public function charts(){
-        return view('Dashboard.pages.charts.chartjs');
+    public function orders(){
+        return view('admin.pages.orders.orderindex');
     }
 
-    public function tables(){
-        return view('Dashboard.pages.tables.table');
+    public function products(){
+        return view('admin.pages.products.productindex');
     }
 
     public function users(){
-        return view('Dashboard.pages.users.users');
+        return view('admin.pages.users.userindex');
+    }
+
+    public function suppliers(){
+        return view('admin.pages.suppliers.supplierindex');
+    }
+
+    public function inventory(){
+        return view('admin.pages.inventory.inventoryindex');
     }
 }

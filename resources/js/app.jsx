@@ -1,14 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import Header from './components/header'; // Adjust path as per your project structure
-import '../css/app.css'; // Ensure your global CSS is imported
+import Sidebar from './components/sidebar';
+import '../css/app.css';
+
 
 function App() {
     return (
-        <div>
+        <div className="App">
             <Header />
-            {/* Other components or content */}
+            <div className="main-wrapper">
+                <Sidebar />
+                
+            </div>
+            
         </div>
+
+        
     );
 }
 
@@ -21,3 +29,4 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Element with id "hello-react" not found.');
     }
 });
+

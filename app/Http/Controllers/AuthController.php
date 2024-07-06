@@ -60,7 +60,7 @@ class AuthController extends Controller
             // Redirect based on user role
             $user = Auth::user();
             if ($user->is_admin) {
-                return response()->json(['success' => true, 'redirect' => route('Dashboard.index')]);
+                return response()->json(['success' => true, 'redirect' => route('admin.index')]);
             } else {
                 return response()->json(['success' => true, 'redirect' => route('customer.menu.dashboard')]);
             }
@@ -70,4 +70,12 @@ class AuthController extends Controller
         return response()->json(['success' => false, 'message' => 'The provided credentials do not match our records.']);
     }
     
+    public function logout(){
+        auth()->logout();
+        return redirect()->route('login')->with('success','Logout Success');
+    }
+
+  
+    
 }
+

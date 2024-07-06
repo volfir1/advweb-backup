@@ -2,6 +2,6 @@
 
 @section('content')
   <div id="order-content">
-    <h1 class="centered-header">Dashboard</h1>
+    <h1 class="centered-header">Hello world</h1>
   </div>
 @endsection

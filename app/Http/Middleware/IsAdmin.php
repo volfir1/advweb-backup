@@ -14,12 +14,19 @@ class IsAdmin
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->is_admin) {
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be authenticated to access this page');
         }
 
-        return redirect('/home')->with('error', 'You do not have access to this page.');
+        if (!Auth::user()->is_admin) {
+            return redirect()->route('login')->with('error', 'You do not have permission to access this page');
+        }
+
+        return $next($request);
     }
-}
+    }
+    
+    
+
