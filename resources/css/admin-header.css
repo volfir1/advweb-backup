@@ -1,7 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Baskervville+SC&display=swap');
-
 /* General styling for the layout */
-
 
 /* Header styling */
 .header {
@@ -12,14 +9,71 @@
     align-items: center;
     padding: 1rem 2rem;
     position: sticky;
-    top: 0%;
+    top: 0;
     z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 /* Logo styling */
 .header .logo {
     height: 50px;
     width: auto;
+}
+
+/* Profile section styling */
+.profile-section {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.welcome-message {
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+/* Dropdown menu styling */
+.profile-dropdown {
+    position: absolute;
+    top: 70px;
+    right: 140px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    width: 150px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.profile-dropdown li {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.profile-dropdown li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+}
+
+.profile-dropdown li a:hover {
+    color: #92beed;
 }
 
 /* Navigation styling */

@@ -2,10 +2,19 @@
     height: 100%;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    position: fixed; /* Make the sidebar fixed */
+    position: fixed;
     top: 0;
     left: 0;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.Sidebar.expanded {
+    width: 250px;
+}
+
+.Sidebar.collapsed {
+    width: 60px;
 }
 
 .SidebarList {
@@ -40,9 +49,29 @@
 
 .row #title {
     flex: 70%;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflowing text */
+    text-overflow: ellipsis; /* Add ellipsis (...) for overflowing text */
 }
 
 /* Use a class for active state */
-.SidebarList .active {
+.SidebarList #active {
     background-color: #ff2c2c;
+}
+
+/* Toggle button styles */
+.toggle-btn {
+    position: absolute;
+    top: 20px; /* Lower the button on the page */
+    left: calc(100% + 5px);
+    background-color: #ff2c2c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    z-index: 1000; /* Ensure the button is on top of other elements */
+}
+
+.Sidebar.collapsed .toggle-btn {
+    left: calc(100% - 5px); /* Adjust position when sidebar is collapsed */
 }

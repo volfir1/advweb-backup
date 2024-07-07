@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use App\Models\Customer;
+use Illuminate\Support\Facades\DB;
+
+
 
 class AuthController extends Controller
 {
@@ -22,29 +26,48 @@ class AuthController extends Controller
 
     public function registerUser(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|string|min:3|max:12',
-            
-        ], [
-            
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
+            'contact' => 'required|string|digits:11',
+            'address' => 'required|string|max:255'
         ]);
-
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-
-        $res = $user->save();
-
-        if ($res) {
-            return back()->with('success', 'You have successfully registered');
-        } else {
-            return back()->with('failed', 'Something went wrong, please try again');
+    
+        DB::beginTransaction();
+    
+        try {
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+            ]);
+    
+            $customer = Customer::create([
+                'user_id' => $user->id,
+                'fname' => $validated['fname'],
+                'lname' => $validated['lname'],
+                'contact' => $validated['contact'],
+                'address' => $validated['address']
+            ]);
+    
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'You have successfully registered']);
+    
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['success' => false, 'message' => 'Something went wrong, please try again', 'error' => $e->getMessage()], 500);
         }
     }
+    
 
+
+
+    //login
     public function authenticate(Request $request)
     {
         // Validate the input
@@ -75,7 +98,12 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success','Logout Success');
     }
 
-  
+    public function checkEmail(Request $request)
+{
+    $email = $request->input('email');
+    $exists = \App\Models\User::where('email', $email)->exists();
+    return response()->json(['exists' => $exists]);
+}
     
 }
 
