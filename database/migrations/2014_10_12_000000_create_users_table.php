@@ -18,10 +18,12 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_admin')->default(false);
-            $table->string('profile_image')->nullable(); // Add this line
+            $table->boolean('active_status')->default(true); // Active status column
+            $table->string('profile_image')->nullable(); // Profile image column
             $table->rememberToken();
             $table->timestamps();
         });
+        
     }
 
     /**

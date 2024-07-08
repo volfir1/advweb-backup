@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../../css/admin-header.css';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded'; // Importing manage profile icon
+import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded'; // Importing logout icon
 
 function Header({ user }) {
   const handleLogout = () => {
-    window.location.href = '/logout'; // Directly change the window location
+    window.location.href = '/logout';
   };
 
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -13,35 +16,45 @@ function Header({ user }) {
     setDropdownVisible(!dropdownVisible);
   };
 
-  // Determine the welcome message based on user role
   const getWelcomeMessage = () => {
-    if (user.role === 'admin') {
-      return `Welcome Admin, ${user.name}`;
-    } else if (user.role === 'customer') {
-      return `Welcome Customer, ${user.name}`;
-    } else {
-      return `Welcome, ${user.name}`;
-    }
+    const role = user.role === 'admin' ? 'Admin' : user.role === 'customer' ? 'Customer' : '';
+    return (
+      <>
+        Welcome {role}, <span className="welcome-name">{user.name}</span>
+      </>
+    );
   };
 
   return (
-    <section>
-      <header className="header">
-        <div className="header-content">
-          <img src="../logos/baketogo.jpg" alt="Company Logo" className="logo" />
-          <div className="profile-section" onClick={toggleDropdown} role="button" aria-haspopup="true" aria-expanded={dropdownVisible}>
-            <img src={user.profilePic || 'https://via.placeholder.com/50'} alt="Profile" className="profile-pic" />
-            <span className="welcome-message">{getWelcomeMessage()}</span>
-            {dropdownVisible && (
-              <ul className="profile-dropdown">
-                <li><a onClick={handleLogout}>Logout</a></li>
-                <li><a href="/manage-profile">Manage Profile</a></li>
-              </ul>
-            )}
-          </div>
+    <header className="header">
+      <div className="header-content">
+        <img src="../logos/baketogo.jpg" alt="Company Logo" className="logo" />
+        <div className="search-bar">
+          <input type="text" placeholder="Search..." className="search-input" />
+          <SearchRoundedIcon className="search-icon" />
         </div>
-      </header>
-    </section>
+        <div 
+          className="profile-section" 
+          onClick={toggleDropdown} 
+          role="button" 
+          aria-haspopup="true" 
+          aria-expanded={dropdownVisible}
+        >
+          <img src={user.profilePic || 'https://via.placeholder.com/40'} alt="Profile" className="profile-pic" />
+          <span className="welcome-message">{getWelcomeMessage()}</span>
+          <ul className={`profile-dropdown ${dropdownVisible ? 'visible' : ''}`}>
+            <li>
+              <PersonRoundedIcon className="dropdown-icon" /> 
+              <a href="/manage-profile">Manage Profile</a>
+            </li>
+            <li>
+              <ExitToAppRoundedIcon className="dropdown-icon" /> 
+              <a onClick={handleLogout}>Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
   );
 }
 

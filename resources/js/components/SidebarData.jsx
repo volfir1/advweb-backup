@@ -3,9 +3,17 @@ import ProductionQuantityLimitsRoundedIcon from '@mui/icons-material/ProductionQ
 import ViewQuiltSharpIcon from '@mui/icons-material/ViewQuiltSharp';
 import Inventory2SharpIcon from '@mui/icons-material/Inventory2Sharp';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import GroupIcon from '@mui/icons-material/Group';
 
 export const SidebarData = [
+
+    {
+        title: "Dashboard",
+        icon: <DashboardRoundedIcon />,
+        link:  "/admin/dashboard"  
+
+    },
 
     {
         title: "Manage Products",

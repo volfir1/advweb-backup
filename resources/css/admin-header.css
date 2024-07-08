@@ -1,16 +1,22 @@
-/* General styling for the layout */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Header styling */
 .header {
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem;
     position: sticky;
     top: 0;
     z-index: 1000;
+    font-family: 'Montserrat', sans-serif;
+    height: 70px;
+    transition: all 0.3s ease;
+}
+
+.header:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .header-content {
@@ -20,50 +26,86 @@
     width: 100%;
 }
 
-/* Logo styling */
 .header .logo {
-    height: 50px;
+    height: 40px;
     width: auto;
+    transition: transform 0.3s ease;
 }
 
-/* Profile section styling */
+.header .logo:hover {
+    transform: scale(1.1);
+}
+
 .profile-section {
     display: flex;
     align-items: center;
     position: relative;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile-section:hover {
+    transform: translateY(-2px);
 }
 
 .profile-pic {
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.profile-pic:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .welcome-message {
     font-size: 16px;
     margin-right: 20px;
+    transition: all 0.3s ease;
 }
 
-/* Dropdown menu styling */
+.welcome-name {
+    color: salmon;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.welcome-name:hover {
+    text-shadow: 1px 1px 2px rgba(250, 128, 114, 0.5);
+}
+
 .profile-dropdown {
     position: absolute;
-    top: 66px;
-    right: 190px; /* Align to the right edge of the profile section */
+    top: 50px;
+    right: 13rem;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     list-style: none;
     padding: 10px 0;
     margin: 0;
-    width: 150px;
+    width: 180px;
     border-radius: 5px;
     z-index: 1000;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.profile-dropdown.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .profile-dropdown li {
     padding: 10px 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-dropdown li:hover {
+    background-color: #f0f0f0;
 }
 
 .profile-dropdown li a,
@@ -77,79 +119,50 @@
     background: none;
     border: none;
     padding: 0;
+    transition: color 0.3s ease;
 }
 
 .profile-dropdown li a:hover,
 .profile-dropdown li button:hover {
-    color: #92beed;
+    color: salmon;
 }
 
-/* Navigation styling */
-.header nav ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.header nav ul li {
-    margin-left: 2rem;
-}
-
-.header nav ul li:first-child {
-    margin-left: 0;
-}
-
-.header nav ul li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 600;
+.search-bar {
+    flex: 1;
     position: relative;
     display: flex;
     align-items: center;
-    cursor: pointer; /* Make all links have a pointer cursor */
+    margin: 0 20px;
+    max-width: 400px;
 }
 
-.header nav ul li a::before {
-    content: "";
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 8px;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
-/* Icon URLs for each menu item */
-.header nav ul li:nth-child(1) a::before {
-    background-image: url('../icons/logout.svg'); /* Replace with your logout icon path */
-}
-
-.header nav ul li:nth-child(2) a::before {
-    background-image: url('../icons/about.png'); /* Replace with your about icon path */
-}
-
-.header nav ul li:nth-child(3) a::before {
-    background-image: url('../icons/services.png'); /* Replace with your services icon path */
-}
-
-.header nav ul li:nth-child(4) a::before {
-    background-image: url('../icons/contact.png'); /* Replace with your contact icon path */
-}
-
-/* Hover effects */
-.header nav ul li a:hover {
-    color: #92beed;
-}
-
-.header nav ul li a:hover::before {
-    filter: brightness(0.8);
-}
-
-/* Main content wrapper styling */
-.main-wrapper {
-    display: flex;
-    height: calc(100% - 72px); /* Adjust based on header height */
-    overflow: hidden;
+.search-input {
     width: 100%;
+    padding: 10px 40px 10px 50px;
+    border-radius: 25px;
+    border: 2px solid #e0e0e0;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: salmon;
+    box-shadow: 0 0 10px rgba(250, 128, 114, 0.3);
+}
+
+.search-input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    color: #888;
+    transition: color 0.3s ease;
+}
+
+.search-input:focus + .search-icon {
+    color: salmon;
 }

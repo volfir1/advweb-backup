@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import Header from './components/Header'; // Ensure correct casing and path
 import Sidebar from './components/Sidebar'; // Ensure correct casing and path
 import '../css/app.css'; // Ensure correct path to app.css
@@ -36,8 +36,7 @@ function App() {
                     <div className="welcome-message">
                         {role === 'admin' ? (
                             <div>
-                                <h1>Welcome Admin, {user.name}</h1>
-                                <button onClick={() => window.location.href = '/logout'} className="logout-button">Logout</button>
+                               
                             </div>
                         ) : (
                             <div>

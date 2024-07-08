@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 .Sidebar {
     height: 100%;
     background-color: white;
@@ -7,6 +9,7 @@
     left: 0;
     transition: width 0.3s ease;
     overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .Sidebar.expanded {
@@ -24,11 +27,6 @@
     margin-top: 10rem;
 }
 
-.SidebarList .row:hover {
-    cursor: pointer;
-    background-color: #f0f0f0;
-}
-
 .SidebarList .row {
     width: 100%;
     height: 60px;
@@ -39,6 +37,13 @@
     justify-content: center;
     align-items: center;
     margin-top: 10%;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.SidebarList .row:hover {
+    cursor: pointer;
+    color: white;
 }
 
 .row #icon {
@@ -49,29 +54,75 @@
 
 .row #title {
     flex: 70%;
-    white-space: nowrap; /* Prevent text from wrapping */
-    overflow: hidden; /* Hide overflowing text */
-    text-overflow: ellipsis; /* Add ellipsis (...) for overflowing text */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Use a class for active state */
 .SidebarList #active {
-    background-color: #ff2c2c;
+    background-color: #FF6B6B;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+    border-radius: 30px; 
 }
 
-/* Toggle button styles */
+.SidebarList #active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 40px;
+    height: 100%;
+    background-color: white;
+    border-radius: 50%;
+    transform: translateX(50%);
+}
+
+.SidebarList .row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FF6B6B;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+    z-index: -1;
+    border-radius: 30px;
+}
+
+.SidebarList .row:hover::before {
+    transform: scaleX(1);
+}
+
+.SidebarList .row:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 40px;
+    height: 100%;
+    background-color: white;
+    border-radius: 50%;
+    transform: translateX(50%);
+}
+
 .toggle-btn {
     position: absolute;
-    top: 20px; /* Lower the button on the page */
+    top: 20px;
     left: calc(100% + 5px);
     background-color: #ff2c2c;
     color: white;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
-    z-index: 1000; /* Ensure the button is on top of other elements */
+    z-index: 1000;
 }
 
 .Sidebar.collapsed .toggle-btn {
-    left: calc(100% - 5px); /* Adjust position when sidebar is collapsed */
+    left: calc(100% - 5px);
 }
