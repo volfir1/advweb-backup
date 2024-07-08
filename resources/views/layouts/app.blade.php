@@ -8,26 +8,12 @@
   <link rel="stylesheet" href="{{ asset('css/inventoryindex.css') }}">
 
   @viteReactRefresh
-    <!-- Load your Vite JavaScript bundle -->
-    @vite('../resources/js/app.jsx')
-  
+  @vite('resources/js/app.jsx')
 </head>
 <body>
-<div id="hello-react"></div>
-<div id="content">
-@yield('content')
-</div>
-
-   
+  <div id="hello-react" data-user="{{ json_encode(Auth::user()) }}" data-role="{{ Auth::user()->is_admin ? 'admin' : 'customer' }}"></div>
+  <div id="content">
+    @yield('content')
+  </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

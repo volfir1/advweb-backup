@@ -1,7 +1,8 @@
+<!-- resources/views/admin/dashboard.blade.php -->
 @extends('layouts.app')
 
 @section('content')
   <div id="order-content">
-    <h1 class="centered-header">Dashboard</h1>
+    <h1 class="centered-header">Admin Dashboard</h1>
   </div>
 @endsection

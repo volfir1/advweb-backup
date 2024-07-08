@@ -26,7 +26,7 @@
               </div>
               <h4>New here?</h4>
               <h6 class="font-weight-light">Signing up is easy. It only takes a few steps</h6>
-              <form id="signupForm" class="pt-3" method="POST">
+              <form id="signupForm" class="pt-3" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                   <input type="text" class="form-control form-control-lg" id="exampleInputUsername1" name="name" placeholder="Username" value="{{ old('name') }}">
@@ -37,8 +37,12 @@
                   <span class="danger-text" id="error-email"></span>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" name="password" placeholder="Password" value="{{ old('password') }}">
+                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" name="password" placeholder="Password">
                   <span class="danger-text" id="error-password"></span>
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword2" name="password_confirmation" placeholder="Confirm Password">
+                  <span class="danger-text" id="error-password-confirm"></span>
                 </div>
                 <div class="form-group">
                   <input type="text" class="form-control form-control-lg" id="inputFirstName" name="fname" placeholder="First Name" value="{{ old('fname') }}">
@@ -56,9 +60,14 @@
                   <textarea class="form-control form-control-lg" id="inputAddress" name="address" rows="3" placeholder="Address">{{ old('address') }}</textarea>
                   <span class="danger-text" id="error-address"></span>
                 </div>
+                <div class="form-group">
+        <label for="inputProfileImage">Profile Image</label>
+        <input type="file" class="form-control-file" id="inputProfileImage" name="profile_image">
+        <span class="danger-text" id="error-profile-image"></span>
+    </div>
                 
                 <div class="mt-3">
-                  <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN UP</button>
+                <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN UP</button>
                 </div>
                 <div class="text-center mt-4 font-weight-light">
                   Already have an account? <a href="{{ route('login') }}" class="text-primary">Login</a>
@@ -95,10 +104,12 @@ $(document).ready(function() {
         var name = $("#exampleInputUsername1").val();
         var email = $("#exampleInputEmail1").val();
         var password = $("#exampleInputPassword1").val();
+        var passwordConfirm = $("#exampleInputPassword2").val();
         var fname = $("#inputFirstName").val();
         var lname = $("#inputLastName").val();
         var contact = $("#inputContact").val();
         var address = $("#inputAddress").val();
+        var profileImage = $("#inputProfileImage")[0].files[0];
         var isValid = true;
 
         // Validate name
@@ -122,6 +133,15 @@ $(document).ready(function() {
             isValid = false;
         } else if (password.length < 3 || password.length > 12) {
             $("#error-password").text('The password must be between 3 and 12 characters long');
+            isValid = false;
+        }
+
+        // Validate confirm password
+        if (passwordConfirm === "") {
+            $("#error-password-confirm").text('Please confirm your password');
+            isValid = false;
+        } else if (password !== passwordConfirm) {
+            $("#error-password-confirm").text('Passwords do not match');
             isValid = false;
         }
 
@@ -152,6 +172,21 @@ $(document).ready(function() {
             isValid = false;
         }
 
+        // Validate profile image
+        if (profileImage) {
+            var fileSize = profileImage.size;
+            var fileType = profileImage.type;
+            var validExtensions = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
+            if ($.inArray(fileType, validExtensions) === -1) {
+                $("#error-profile-image").text('Please upload a valid image file (JPEG, PNG, JPG, GIF)');
+                isValid = false;
+            }
+            if (fileSize > 2048000) {
+                $("#error-profile-image").text('File size should not exceed 2MB');
+                isValid = false;
+            }
+        }
+
         if (isValid) {
             // Check email uniqueness
             $.ajax({
@@ -163,18 +198,25 @@ $(document).ready(function() {
                         $("#error-email").text('This email is already registered');
                     } else {
                         // Proceed with form submission
+                        var formData = new FormData();
+                        formData.append('name', name);
+                        formData.append('email', email);
+                        formData.append('password', password);
+                        formData.append('password_confirmation', passwordConfirm);
+                        formData.append('fname', fname);
+                        formData.append('lname', lname);
+                        formData.append('contact', contact);
+                        formData.append('address', address);
+                        if (profileImage) {
+                            formData.append('profile_image', profileImage);
+                        }
+
                         $.ajax({
                             url: "{{ route('register-user') }}",
                             type: "POST",
-                            data: {
-                                name: name,
-                                email: email,
-                                password: password,
-                                fname: fname,
-                                lname: lname,
-                                contact: contact,
-                                address: address
-                            },
+                            data: formData,
+                            contentType: false,
+                            processData: false,
                             success: function(response) {
                                 if (response.success) {
                                     showPopupMessage('success-popup', 'Registration successful');
@@ -231,6 +273,9 @@ $(document).ready(function() {
             if (errors.password) {
                 $("#error-password").text(errors.password[0]);
             }
+            if (errors.password_confirmation) {
+                $("#error-password-confirm").text(errors.password_confirmation[0]);
+            }
             if (errors.fname) {
                 $("#error-fname").text(errors.fname[0]);
             }
@@ -243,14 +288,16 @@ $(document).ready(function() {
             if (errors.address) {
                 $("#error-address").text(errors.address[0]);
             }
+            if (errors.profile_image) {
+                $("#error-profile-image").text(errors.profile_image[0]);
+            }
         } else {
             showPopupMessage('error-popup', 'An error occurred. Please try again.');
         }
     }
 });
+</script>
 
-
-  </script>
-
+</script>
 </body>
 </html>

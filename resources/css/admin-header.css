@@ -49,8 +49,8 @@
 /* Dropdown menu styling */
 .profile-dropdown {
     position: absolute;
-    top: 70px;
-    right: 140px;
+    top: 66px;
+    right: 190px; /* Align to the right edge of the profile section */
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     list-style: none;
@@ -66,13 +66,21 @@
     cursor: pointer;
 }
 
-.profile-dropdown li a {
+.profile-dropdown li a,
+.profile-dropdown li button {
     text-decoration: none;
     color: #333;
     font-weight: 600;
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
-.profile-dropdown li a:hover {
+.profile-dropdown li a:hover,
+.profile-dropdown li button:hover {
     color: #92beed;
 }
 

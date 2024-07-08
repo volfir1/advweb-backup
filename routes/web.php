@@ -50,7 +50,7 @@ Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'is_customer']], 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-Route::group(['prefix' => 'auth'], function() {
+Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function() {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
     Route::post('/register-user', [AuthController::class, 'registerUser'])->name('register-user');
@@ -60,7 +60,7 @@ Route::group(['prefix' => 'auth'], function() {
 
 // routes/web.php
 Route::post('/check-email', [AuthController::class, 'checkEmail'])->name('check-email');
-
+Route::get('/user/profile', [AuthController::class, 'getUserProfile'])->name('user.profile')->middleware('auth');
 
 
 
