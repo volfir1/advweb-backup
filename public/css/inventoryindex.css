@@ -6,6 +6,7 @@ body {
   overflow-y: auto;
   background-color: #F5F5F5;
   font-family: 'Montserrat', sans-serif;
+  z-index: -1;
 }
 
 #order-content {

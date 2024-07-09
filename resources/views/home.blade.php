@@ -77,12 +77,11 @@ https://templatemo.com/tm-558-klassy-cafe
                             <li class="submenu">
                                 <a href="javascript:;">Account</a>
                                 <ul>
-                                    @if(!auth()->check())
+                                   
                                     <li><a href="{{ route('login') }}">Login</a></li>
-                                    @endif
-                                    
-                                    <li><a href="{{ route('signup') }}">Signup</a></li>
-                                </ul>
+                                   
+                                    <li><a href="{{ route('api.register') }}">Signup</a></li>
+                                    </ul>
                             </li>
                             <!-- <li class=""><a rel="sponsored" href="https://templatemo.com" target="_blank">External URL</a></li> -->
                             <li class="scroll-to-section"><a href="#reservation">Contact Us</a></li> 

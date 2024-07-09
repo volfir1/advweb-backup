@@ -39,18 +39,16 @@ Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'is_customer']], 
     // Add other routes specific to customers here...
 });
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Auth Routes
 Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function() {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
-    Route::post('/register-user', [AuthController::class, 'registerUser'])->name('register-user');
-    Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
+   
 });
 
 Route::post('/check-email', [AuthController::class, 'checkEmail'])->name('check-email');
-Route::get('/user/profile', [AuthController::class, 'getUserProfile'])->name('user.profile')->middleware('auth');
+Route::get('/userprofile', [AuthController::class, 'getUserProfile'])->name('user.profile')->middleware('auth');
 
 // Error Routes
 Route::get('/404', [ErrorController::class, 'error404'])->name('error.404');

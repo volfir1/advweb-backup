@@ -2,7 +2,7 @@
 
 .header {
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -12,11 +12,11 @@
     z-index: 1000;
     font-family: 'Montserrat', sans-serif;
     height: 70px;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
 }
 
 .header:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
 .header-content {
@@ -29,11 +29,11 @@
 .header .logo {
     height: 40px;
     width: auto;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
 }
 
 .header .logo:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .profile-section {
@@ -42,10 +42,12 @@
     position: relative;
     cursor: pointer;
     transition: all 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 20px;
 }
 
 .profile-section:hover {
-    transform: translateY(-2px);
+    background-color: rgba(250, 128, 114, 0.1);
 }
 
 .profile-pic {
@@ -54,10 +56,12 @@
     height: 40px;
     margin-right: 10px;
     transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
-.profile-pic:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+.profile-section:hover .profile-pic {
+    border-color: salmon;
+    box-shadow: 0 0 10px rgba(250, 128, 114, 0.3);
 }
 
 .welcome-message {
@@ -66,46 +70,49 @@
     transition: all 0.3s ease;
 }
 
-.welcome-name {
+.welcome-message .username {
     color: salmon;
     font-weight: bold;
     transition: all 0.3s ease;
 }
 
-.welcome-name:hover {
-    text-shadow: 1px 1px 2px rgba(250, 128, 114, 0.5);
+.profile-section:hover .welcome-message .username {
+    text-shadow: 1px 1px 3px rgba(250, 128, 114, 0.3);
 }
 
 .profile-dropdown {
     position: absolute;
-    top: 50px;
-    right: 13rem;
+    top: 60px;
+    right: 14rem;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     list-style: none;
     padding: 10px 0;
     margin: 0;
-    width: 180px;
-    border-radius: 5px;
+    width: 200px;
+    border-radius: 8px;
     z-index: 1000;
     opacity: 0;
+    visibility: hidden;
     transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
 }
 
 .profile-dropdown.visible {
     opacity: 1;
+    visibility: visible;
     transform: translateY(0);
 }
 
 .profile-dropdown li {
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .profile-dropdown li:hover {
     background-color: #f0f0f0;
+    transform: translateX(5px);
 }
 
 .profile-dropdown li a,
@@ -138,7 +145,7 @@
 
 .search-input {
     width: 100%;
-    padding: 10px 40px 10px 50px;
+    padding: 12px 40px 12px 50px;
     border-radius: 25px;
     border: 2px solid #e0e0e0;
     outline: none;
@@ -148,7 +155,7 @@
 
 .search-input:focus {
     border-color: salmon;
-    box-shadow: 0 0 10px rgba(250, 128, 114, 0.3);
+    box-shadow: 0 0 15px rgba(250, 128, 114, 0.15);
 }
 
 .search-input::placeholder {
@@ -160,9 +167,73 @@
     position: absolute;
     left: 15px;
     color: #888;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .search-input:focus + .search-icon {
     color: salmon;
+    transform: scale(1.1);
 }
+
+
+.right-section {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cart-icon-container {
+    position: relative;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+  
+  .cart-icon {
+    color: #333; /* Adjust color to match your design */
+    font-size: 24px;
+    transition: transform 0.3s ease;
+  }
+  
+  .cart-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  .cart-popup {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    z-index: 1000;
+    width: 250px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+  
+  .cart-icon-container:hover .cart-popup {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .cart-popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .no-products-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+  
+  .cart-popup p {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+  }

@@ -10,6 +10,7 @@
                 <div class="row">
                     <div class="col col-sm-9">Manage Users</div>
                     <div class="col col-sm-3">
+                        <button type="button" id="import_excel" class="btn btn-info btn-sm float-end me-2">Import to Excel</button>
                         <button type="button" id="export_excel" class="btn btn-info btn-sm float-end me-2">Export to Excel</button>
                         <button type="button" id="add_data" class="btn btn-success btn-sm float-end">Add</button>
                     </div>
