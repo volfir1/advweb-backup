@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import '../../css/admin-header.css';
+import axios from 'axios';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import axios from 'axios';
+import '../../css/admin-header.css';
 
 function Header({ user }) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -21,7 +21,7 @@ function Header({ user }) {
     try {
       await axios.post('/api/logout');
       setTimeout(() => {
-        window.location.href = '/home';
+        window.location.href = '/home'; // Redirect after logout
       }, 100);
     } catch (error) {
       console.error('Error during logout:', error);
@@ -47,7 +47,7 @@ function Header({ user }) {
 
   const getImageSrc = () => {
     if (!user || !user.profile_image) {
-      return 'https://via.placeholder.com/40';
+      return 'https://via.placeholder.com/40'; // Placeholder image URL
     }
     try {
       const imageUrl = user.profile_image.startsWith('http')
@@ -56,7 +56,7 @@ function Header({ user }) {
       return imageUrl;
     } catch (error) {
       console.error('Error getting image source:', error);
-      return 'https://via.placeholder.com/40';
+      return 'https://via.placeholder.com/40'; // Placeholder image URL
     }
   };
 
@@ -68,18 +68,22 @@ function Header({ user }) {
     }
   }, [user]);
 
+  if (!user) {
+    return null; // or Loading indicator, depending on your design
+  }
+
   return (
     <header className="header">
       <div className="header-content">
         <img src="../logos/baketogo.jpg" alt="Company Logo" className="logo" />
-        {user && user.role === 'customer' && (
+        {user.role === 'customer' && (
           <div className="search-bar">
             <input type="text" placeholder="Search..." className="search-input" />
             <SearchRoundedIcon className="search-icon" />
           </div>
         )}
         <div className="right-section">
-          {user && user.role === 'customer' && (
+          {user.role === 'customer' && (
             <div
               className="cart-icon-container"
               onMouseEnter={() => setCartHovered(true)}
@@ -134,9 +138,10 @@ function Header({ user }) {
 Header.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    profile_image: PropTypes.string,
+    email: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
-  }).isRequired,
+    profile_image: PropTypes.string, // Assuming profile_image is optional
+  }),
 };
 
 export default Header;

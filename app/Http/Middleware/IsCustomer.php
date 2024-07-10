@@ -14,19 +14,18 @@ class IsCustomer
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle($request, Closure $next)
     {
-        // Check if the user is authenticated
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'You must be authenticated to access this page');
         }
 
-        // Check if the authenticated user is not an admin
-        if (Auth::check() && !Auth::user()->is_admin) {
+        // Check if the authenticated user's role is customer
+        if (Auth::user()->role === 'customer') {
             return $next($request);
         }
 
-        // If the user is an admin, redirect to a 403 error page
+        // If the user is not a customer, redirect to the 403 page
         return redirect('/403')->with('error', 'You do not have access to this page.');
     }
 }

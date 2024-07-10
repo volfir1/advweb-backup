@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import Header from './components/header';
-import Sidebar from './components/sidebar';
-import '../css/app.css';
+import Header from './components/header'; // Adjust the import path based on your actual structure
+import Sidebar from './components/Sidebar'; // Adjust the import path based on your actual structure
 import axios from 'axios';
+import '../css/app.css';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -11,40 +11,29 @@ function App() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('/api/user/profile'); // Ensure this URL matches the route you defined
-        console.log(response.data);  // Log user data for debugging
-        setUser(response.data);
+        const response = await axios.get('/api/user-profile');
+        setUser(response.data); // Assuming response.data contains user profile data
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
     };
 
-    fetchUserProfile(); // Call the function when the component mounts
+    fetchUserProfile();
   }, []);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // Add a loading indicator or handle the loading state
   }
 
-  const role = user.is_admin ? 'admin' : 'customer';
+  const role = user.role === 'admin' ? 'admin' : 'customer'; // Assuming user.role is properly set
 
   return (
     <div className="App">
-      <Header user={{ ...user, role }} />
+      <Header user={{ ...user, role }} /> {/* Pass user and role to Header */}
       <div className="main-wrapper">
-        {role === 'admin' && <Sidebar />}
+        {role === 'admin' && <Sidebar />} {/* Render Sidebar based on user role */}
         <div className="content">
-          <div className="welcome-message">
-            {role === 'admin' ? (
-              <div>
-                
-              </div>
-            ) : (
-              <div>
-               
-              </div>
-            )}
-          </div>
+          {/* Other content */}
         </div>
       </div>
     </div>
@@ -60,3 +49,5 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('Element with id "hello-react" not found.');
   }
 });
+
+export default App;

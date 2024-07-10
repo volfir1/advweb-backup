@@ -20,57 +20,58 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function registerUser(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|string|min:3|max:12|confirmed',
-            'fname' => 'required|string|max:255',
-            'lname' => 'required|string|max:255',
-            'contact' => 'required|string|digits:11',
-            'address' => 'required|string|max:255',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
-    
-        DB::beginTransaction();
-    
-        try {
-            $profileImagePath = null;
-            if ($request->hasFile('profile_image')) {
-                $profileImagePath = $request->file('profile_image')->store('profile_images', 'public');
-                \Log::info('Profile image uploaded to: ' . $profileImagePath);
-            } else {
-                \Log::info('No profile image uploaded.');
-            }
-    
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'profile_image' => $profileImagePath, // Save the image path here
-            ]);
-    
-            \Log::info('User created with ID: ' . $user->id . ' and profile image: ' . $user->profile_image);
-    
-            $customer = Customer::create([
-                'user_id' => $user->id,
-                'fname' => $validated['fname'],
-                'lname' => $validated['lname'],
-                'contact' => $validated['contact'],
-                'address' => $validated['address']
-            ]);
-    
-            DB::commit();
-    
-            return response()->json(['success' => true, 'message' => 'You have successfully registered']);
-    
-        } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::error('Error during registration: ' . $e->getMessage());
-    
-            return response()->json(['success' => false, 'message' => 'Something went wrong, please try again', 'error' => $e->getMessage()], 500);
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users',
+        'password' => 'required|string|min:3|max:12|confirmed',
+        'fname' => 'required|string|max:255',
+        'lname' => 'required|string|max:255',
+        'contact' => 'required|string|digits:11',
+        'address' => 'required|string|max:255',
+        'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $profileImagePath = null;
+        if ($request->hasFile('profile_image')) {
+            $profileImagePath = $request->file('profile_image')->store('profile_images', 'public');
+            \Log::info('Profile image uploaded to: ' . $profileImagePath);
+        } else {
+            \Log::info('No profile image uploaded.');
         }
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'profile_image' => $profileImagePath, // Save the image path here
+            'role' => 'customer', // Default to customer for new registrations
+        ]);
+
+        \Log::info('User created with ID: ' . $user->id . ' and profile image: ' . $user->profile_image);
+
+        $customer = Customer::create([
+            'user_id' => $user->id,
+            'fname' => $validated['fname'],
+            'lname' => $validated['lname'],
+            'contact' => $validated['contact'],
+            'address' => $validated['address']
+        ]);
+
+        DB::commit();
+
+        return response()->json(['success' => true, 'message' => 'You have successfully registered']);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        \Log::error('Error during registration: ' . $e->getMessage());
+
+        return response()->json(['success' => false, 'message' => 'Something went wrong, please try again', 'error' => $e->getMessage()], 500);
     }
+}
 
     /**
      * Authenticate user and return response with token on success.
@@ -85,21 +86,21 @@ class AuthController extends Controller
                 'name' => ['required', 'string'],
                 'password' => ['required', 'string'],
             ]);
-
+    
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-
+    
                 // Create a Sanctum token
                 $token = Auth::user()->createToken('auth_token')->plainTextToken;
-
+    
                 return response()->json([
                     'success' => true,
                     'message' => 'Login successful',
-                    'redirect' => Auth::user()->is_admin ? route('admin.index') : route('customer.menu.dashboard'),
+                    'redirect' => Auth::user()->role === 'admin' ? route('admin.index') : route('customer.menu.dashboard'),
                     'token' => $token,
                 ]);
             }
-
+    
             return response()->json([
                 'success' => false,
                 'message' => 'The provided credentials do not match our records.',
@@ -112,6 +113,7 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    
 
     /**
      * Log the user out (revoke the token).
@@ -139,8 +141,16 @@ class AuthController extends Controller
      */
     public function getUserProfile(Request $request)
     {
-        // Implement user profile retrieval logic here if needed
+        $user = $request->user();
+    
+        return response()->json([
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            // Add other profile information as needed
+        ]);
     }
+    
 
 
     public function showRegistrationForm()

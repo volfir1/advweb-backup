@@ -17,43 +17,48 @@ class UserManagementController extends Controller
     {
         $query = User::leftJoin('customers', 'users.id', '=', 'customers.user_id')
             ->select('users.*', 'customers.fname', 'customers.lname', 'customers.contact', 'customers.address');
-
+    
         if ($request->has('search')) {
             $searchValue = $request->input('search');
             $query->where(function($q) use ($searchValue) {
                 $q->where('users.name', 'like', "%{$searchValue}%")
-                    ->orWhere('users.email', 'like', "%{$searchValue}%")
-                    ->orWhere('customers.fname', 'like', "%{$searchValue}%")
-                    ->orWhere('customers.lname', 'like', "%{$searchValue}%");
+                  ->orWhere('users.email', 'like', "%{$searchValue}%")
+                  ->orWhere('customers.fname', 'like', "%{$searchValue}%")
+                  ->orWhere('customers.lname', 'like', "%{$searchValue}%");
             });
         }
-
+    
         $totalRecords = $query->count();
         $filteredRecords = $totalRecords;
-
+    
         $users = $query->skip($request->input('start'))
-            ->take($request->input('length'))
-            ->get();
-
+                       ->take($request->input('length'))
+                       ->get();
+    
+        // Map and format the response with correct role values
+        $formattedUsers = $users->map(function($user) {
+            return [
+                'id' => $user->id,
+                'profile_image' => $user->profile_image,
+                'name' => $user->name,
+                'email' => $user->email,
+                'active_status' => $user->active_status,
+                'role' => $user->role, // Convert boolean role to 1 or 0
+                'fname' => $user->fname,
+                'lname' => $user->lname,
+                'contact' => $user->contact,
+                'address' => $user->address,
+            ];
+        });
+    
         return response()->json([
             'draw' => $request->input('draw'),
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $filteredRecords,
-            'data' => $users->map(function($user) {
-                return [
-                    'id' => $user->id,
-                    'profile_image' => $user->profile_image,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'active_status' => $user->active_status,
-                    'fname' => $user->fname,
-                    'lname' => $user->lname,
-                    'contact' => $user->contact,
-                    'address' => $user->address,
-                ];
-            })
+            'data' => $formattedUsers, // Return formatted user data with role
         ]);
     }
+    
 
     public function getEditUserData($id)
     {
@@ -69,6 +74,7 @@ class UserManagementController extends Controller
                 'contact' => $user->customer->contact,
                 'address' => $user->customer->address,
                 'active_status' => $user->active_status ? 1 : 0,
+                'role'=>$user->role ? 1:0,
                 'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
 
             ]);
@@ -85,21 +91,20 @@ class UserManagementController extends Controller
     public function updateUserData(Request $request)
 {
     $request->validate([
-        'name' => 'required|string|max:255',
-        'first_name' => 'required|string|max:255',
-        'last_name' => 'required|string|max:255',
+        'name' => 'string|max:255',
+        'first_name' => 'string|max:255',
+        'last_name' => 'string|max:255',
         'email' => [
-            'required',
             'string',
             'email',
             'max:255',
             Rule::unique('users')->ignore($request->id),
         ],
-        'contact' => 'required|string|max:20',
-        'address' => 'required|string|max:255',
+        'contact' => 'string|max:20',
+        'address' => 'string|max:255',
         'active_status' => 'required|in:1,0',
-        'password' => 'nullable|string|min:8',
-        'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'role' => 'required|in:1,0',
+        
     ]);
 
     DB::beginTransaction();
@@ -143,36 +148,38 @@ class UserManagementController extends Controller
     }
 }
 
-    public function saveUser(Request $request)
-    {
-        // Validate the request data
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'password' => 'nullable|string|min:8', // If updating, password can be nullable
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'contact' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+public function saveUser(Request $request)
+{
+    // Validate the request data
+    $validator = Validator::make($request->all(), [
+        'role' => 'required|in:1,0',
+        'active_status' => 'required|in:1,0',
+    ]);
 
-        ]);
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
 
-        // Check if it's an update or create request
-        $user = $request->id ? User::find($request->id) : new User();
+    // Check if it's an update or create request
+    $user = $request->id ? User::find($request->id) : new User();
 
-        // Update the user data
+    // Update the user data if provided
+    if ($request->has('name')) {
         $user->name = $request->name;
+    }
+
+    if ($request->has('email')) {
         $user->email = $request->email;
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
-        $user->active_status = $request->active_status ? 1 : 0;
+    }
 
-        // Save the user
-        $user->save();
+    $user->active_status = $request->active_status ? 1 : 0;
+    $user->role = $request->role; // Ensure role assignment
 
-        // Save or update the related customer data
+    // Save the user
+    $user->save();
+
+    // Save or update the related customer data if provided
+    if ($request->has('first_name')) {
         $customer = $user->customer ?: new Customer();
         $customer->user_id = $user->id;
         $customer->fname = $request->first_name;
@@ -182,10 +189,15 @@ class UserManagementController extends Controller
 
         // Save the customer
         $customer->save();
-
-        // Return a response
-        return response()->json(['success' => 'User saved successfully!']);
     }
+
+    // Return a success response
+    return response()->json(['success' => 'User saved successfully!']);
+}
+
+
+
+
 
     public function deleteUser($id)
     {

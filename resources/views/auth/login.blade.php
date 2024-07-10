@@ -110,13 +110,14 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        // Store the token in localStorage
                         localStorage.setItem('auth_token', response.token);
-                        
-                        showPopupMessage('success-popup', response.message || 'Login successful');
-                        setTimeout(function() {
+
+                        if (response.redirect) {
                             window.location.href = response.redirect;
-                        }, 2000); // Redirect after 2 seconds
+                        } else {
+                            console.error('Redirect URL not provided in response');
+                            // Optionally, redirect to a default URL or display an error message
+                        }
                     } else {
                         showPopupMessage('error-popup', response.message || 'Login failed');
                     }
@@ -147,6 +148,7 @@ $(document).ready(function() {
         }, 3000); // Show for 3 seconds
     }
 });
+
 
   </script>
 </body>

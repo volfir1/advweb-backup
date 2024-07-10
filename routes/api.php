@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::get('/user-profile', [AuthController::class, 'getUserProfile'])->name('api.user-profile');
     Route::get('/user/profile', [UserController::class, 'profile']);
+
 });
 
 Route::get('/public-route', function () {
@@ -30,16 +31,15 @@ Route::get('/public-route', function () {
 
 
 Route::middleware('auth:sanctum')->prefix('admin')->group(function(){
-    Route::post('/admin/saveUser', [UserManagementController::class, 'saveUser'])->name('admin.saveUser');
-    Route::get('/admin/user/{id}', [UserManagementController::class, 'getEditUserData'])->name('admin.getEditUserData');
-    Route::delete('admin/users/delete/{id}', [UserManagementController::class, 'deleteUser'])->name('api.admin.deleteUser');
-    Route::post('/admin/user/update', [UserManagementController::class, 'updateUserData'])->name('admin.updateUserData');
+    Route::post('/saveUser', [UserManagementController::class, 'saveUser'])->name('api.admin.saveUser');
+    Route::get('/admin/user/{id}', [UserManagementController::class, 'getEditUserData'])->name('api.admin.getEditUserData');
+    Route::delete('/users/delete/{id}', [UserManagementController::class, 'deleteUser'])->name('api.admin.deleteUser');
+    Route::post('/user/update', [UserManagementController::class, 'updateUserData'])->name('api.admin.updateUserData');
     Route::get('/users/fetchUsers', [UserManagementController::class, 'fetchUsers'])->name('api.admin.fetchUsers');
-            Route::post('/users/store', [UserManagementController::class, 'storeUser'])->name('api.admin.storeUser');
-            Route::post('admin/users/import', [SpreadSheetController::class, 'importUsers'])->name('api.admin.importUsers');
-            Route::get('admin/users/export', [SpreadSheetController::class, 'exportUsers'])->name('api.admin.exportUsers');
-
-
+    Route::post('/users/store', [UserManagementController::class, 'storeUser'])->name('api.admin.storeUser');
+    Route::post('/users/import', [SpreadSheetController::class, 'importUsers'])->name('api.admin.importUsers');
+    Route::get('/users/export', [SpreadSheetController::class, 'exportUsers'])->name('api.admin.exportUsers');
 });
+;
 
 

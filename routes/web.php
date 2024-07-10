@@ -47,7 +47,6 @@ Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function() {
 });
 
 Route::post('/check-email', [AuthController::class, 'checkEmail'])->name('check-email');
-Route::get('/userprofile', [AuthController::class, 'getUserProfile'])->name('user.profile')->middleware('auth');
 
 // Error Routes
 Route::get('/404', [ErrorController::class, 'error404'])->name('error.404');
