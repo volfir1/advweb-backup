@@ -32,6 +32,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        
     ];
 
     /**
@@ -41,9 +42,13 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
+        'active_status' => 'boolean',
     ];
-
+    use HasApiTokens, Notifiable;
     public function customer(){
         return $this->hasOne(Customer::class);
     }
+
+    
 }

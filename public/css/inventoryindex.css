@@ -87,7 +87,7 @@ body {
   border-radius: 8px;
   overflow: hidden;
   transition: all 0.3s ease;
-  left: 10rem;
+  left: 5rem;
 }
 
 .card:hover {

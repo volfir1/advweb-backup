@@ -26,7 +26,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
     Route::prefix('/users')->group(function () {
         Route::get('/', [AdminController::class, 'users'])->name('userindex');
         Route::get('/fetch', [AdminController::class, 'fetchUsers'])->name('admin.fetchUsers');
-        Route::post('/save', [AdminController::class, 'saveUser'])->name('admin.saveUser');
         Route::get('/{id}/edit', [AdminController::class, 'fetchSingleUser'])->name('admin.fetchSingleUser');
         Route::delete('/{id}/delete', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
         Route::get('/export/excel', [SpreadsheetController::class, 'exportUsersToExcel'])->name('admin.exportUsersToExcel');
